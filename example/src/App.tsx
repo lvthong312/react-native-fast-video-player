@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { FastVideo } from 'react-native-fast-video';
+import { FastVideo } from 'react-native-fast-video-player';
 
 export default function App() {
   return (

@@ -7,6 +7,8 @@ Support for Video
 
 ```sh
 npm install react-native-fast-video
+npm install react-native-video
+npm install react-native-fast-orientation-locker
 ```
 
 

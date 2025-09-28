@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactElement } from 'react';
+import { useRef, useState, type ReactElement, useEffect } from 'react';
 import {
   Modal,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   type StyleProp,
   type TextStyle,
   type ViewStyle,
+  Platform,
 } from 'react-native';
 import Video, {
   type OnLoadData,
@@ -15,13 +16,25 @@ import Video, {
   type VideoRef,
 } from 'react-native-video';
 import { VideoControls } from './VideoControls';
-
+import {
+  lockToLandscape,
+  lockToPortrait,
+} from 'react-native-fast-orientation-locker';
 interface FastVideoProps {
   source: ReactVideoSource;
   watermarkText: string;
   watermarkStyle?: TextStyle;
   style?: StyleProp<ViewStyle>;
   OverLayComponent?: ReactElement;
+  supportedOrientations?:
+    | ReadonlyArray<
+        | 'portrait'
+        | 'portrait-upside-down'
+        | 'landscape'
+        | 'landscape-left'
+        | 'landscape-right'
+      >
+    | undefined;
 }
 export default function FastVideo({
   source,
@@ -29,6 +42,7 @@ export default function FastVideo({
   watermarkStyle,
   style,
   OverLayComponent,
+  supportedOrientations = ['landscape'],
 }: FastVideoProps) {
   const smallRef = useRef<VideoRef>(null);
   const fullRef = useRef<VideoRef>(null);
@@ -54,7 +68,13 @@ export default function FastVideo({
     }
     setPaused((prev) => !prev);
   };
-
+  useEffect(() => {
+    return () => {
+      if (Platform.OS === 'android') {
+        lockToPortrait();
+      }
+    };
+  }, []);
   const handleSeek = (time: number) => {
     setCurrentTime(time);
     if (isFullscreen) {
@@ -68,6 +88,9 @@ export default function FastVideo({
   };
 
   const handleCloseFullscreen = () => {
+    if (Platform.OS === 'android') {
+      lockToPortrait();
+    }
     setFullscreen(false);
     smallRef.current?.seek(currentTime);
     smallRef.current?.resume();
@@ -126,10 +149,12 @@ export default function FastVideo({
         visible={isFullscreen}
         onShow={() => {
           // khi modal mở → seek đến thời gian trước đó
+          if (Platform.OS === 'android') {
+            lockToLandscape?.();
+          }
         }}
         onRequestClose={() => {}}
-        supportedOrientations={['landscape']}
-        presentationStyle="overFullScreen"
+        supportedOrientations={supportedOrientations}
         statusBarTranslucent
       >
         <View style={{ flex: 1, backgroundColor: 'black' }}>
