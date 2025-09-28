@@ -18,7 +18,7 @@ import Video, {
 import { VideoControls } from './VideoControls';
 import {
   lockToLandscape,
-  lockToPortrait,
+  unlockAllOrientations,
 } from 'react-native-fast-orientation-locker';
 interface FastVideoProps {
   source: ReactVideoSource;
@@ -71,7 +71,7 @@ export default function FastVideo({
   useEffect(() => {
     return () => {
       if (Platform.OS === 'android') {
-        lockToPortrait();
+        unlockAllOrientations();
       }
     };
   }, []);
@@ -89,7 +89,7 @@ export default function FastVideo({
 
   const handleCloseFullscreen = () => {
     if (Platform.OS === 'android') {
-      lockToPortrait();
+      unlockAllOrientations();
     }
     setFullscreen(false);
     smallRef.current?.seek(currentTime);
