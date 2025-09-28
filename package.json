@@ -1,5 +1,5 @@
 {
-  "name": "react-native-fast-video",
+  "name": "react-native-fast-video-player",
   "version": "0.1.0",
   "description": "Support for Video",
   "main": "./lib/module/index.js",
@@ -65,6 +65,7 @@
     "@eslint/js": "^9.35.0",
     "@evilmartians/lefthook": "^1.12.3",
     "@react-native-community/cli": "20.0.1",
+    "@react-native-community/slider": "^5.0.1",
     "@react-native/babel-preset": "0.81.1",
     "@react-native/eslint-config": "^0.81.1",
     "@release-it/conventional-changelog": "^10.0.1",
@@ -80,13 +81,16 @@
     "react": "19.1.0",
     "react-native": "0.81.1",
     "react-native-builder-bob": "^0.40.13",
+    "react-native-video": "^6.16.1",
     "release-it": "^19.0.4",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2"
   },
   "peerDependencies": {
+    "@react-native-community/slider": "*",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-video": "*"
   },
   "workspaces": [
     "example"
