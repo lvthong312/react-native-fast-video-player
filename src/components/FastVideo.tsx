@@ -26,15 +26,6 @@ interface FastVideoProps {
   watermarkStyle?: TextStyle;
   style?: StyleProp<ViewStyle>;
   OverLayComponent?: ReactElement;
-  supportedOrientations?:
-    | ReadonlyArray<
-        | 'portrait'
-        | 'portrait-upside-down'
-        | 'landscape'
-        | 'landscape-left'
-        | 'landscape-right'
-      >
-    | undefined;
 }
 export default function FastVideo({
   source,
@@ -42,7 +33,6 @@ export default function FastVideo({
   watermarkStyle,
   style,
   OverLayComponent,
-  supportedOrientations = ['landscape'],
 }: FastVideoProps) {
   const smallRef = useRef<VideoRef>(null);
   const fullRef = useRef<VideoRef>(null);
@@ -84,6 +74,7 @@ export default function FastVideo({
     }
   };
   const handleOpenFullscreen = () => {
+    smallRef.current?.pause();
     setFullscreen(true);
   };
 
@@ -154,7 +145,7 @@ export default function FastVideo({
           }
         }}
         onRequestClose={() => {}}
-        supportedOrientations={supportedOrientations}
+        supportedOrientations={['landscape']}
         statusBarTranslucent
       >
         <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -170,7 +161,6 @@ export default function FastVideo({
               setCurrentTime(data.currentTime);
             }}
             onLoad={(data: OnLoadData) => {
-              smallRef.current?.pause();
               fullRef.current?.seek(currentTime);
               setDuration(data.duration);
             }}

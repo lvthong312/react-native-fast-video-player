@@ -1,6 +1,6 @@
 {
   "name": "react-native-fast-video-player",
-  "version": "0.4.0",
+  "version": "0.8.0",
   "description": "Support for Video",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
@@ -47,14 +47,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lvthong312/react-native-fast-video.git"
+    "url": "git+https://github.com/lvthong312/react-native-fast-video-player.git"
   },
   "author": "Thong Luong <lvthong312@gmail.com> (https://github.com/lvthong312)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lvthong312/react-native-fast-video/issues"
+    "url": "https://github.com/lvthong312/react-native-fast-video-player/issues"
   },
-  "homepage": "https://github.com/lvthong312/react-native-fast-video#readme",
+  "homepage": "https://github.com/lvthong312/react-native-fast-video-player#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

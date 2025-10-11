@@ -10211,6 +10211,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-fast-orientation-locker@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "react-native-fast-orientation-locker@npm:0.3.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: cdecaac4e038ec2a99e0228d91d7ed329c1d3d0a3a50940f8839feb29024c843284d7b592f79a4ed91ac07839753ad637de41d13036f2ad8e7c20e02c34dc4df
+  languageName: node
+  linkType: hard
+
 "react-native-fast-video-example@workspace:example":
   version: 0.0.0-use.local
   resolution: "react-native-fast-video-example@workspace:example"
@@ -10230,15 +10240,16 @@ __metadata:
     react: 19.1.0
     react-native: 0.81.1
     react-native-builder-bob: ^0.40.13
+    react-native-fast-orientation-locker: ^0.3.0
     react-native-monorepo-config: ^0.1.9
     react-native-safe-area-context: ^5.5.2
     react-native-video: ^6.16.1
   languageName: unknown
   linkType: soft
 
-"react-native-fast-video@workspace:.":
+"react-native-fast-video-player@workspace:.":
   version: 0.0.0-use.local
-  resolution: "react-native-fast-video@workspace:."
+  resolution: "react-native-fast-video-player@workspace:."
   dependencies:
     "@commitlint/config-conventional": ^19.8.1
     "@eslint/compat": ^1.3.2
@@ -10262,6 +10273,7 @@ __metadata:
     react: 19.1.0
     react-native: 0.81.1
     react-native-builder-bob: ^0.40.13
+    react-native-fast-orientation-locker: ^0.3.0
     react-native-video: ^6.16.1
     release-it: ^19.0.4
     turbo: ^2.5.6

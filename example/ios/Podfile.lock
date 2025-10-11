@@ -2,7 +2,7 @@ PODS:
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - fast_float (8.0.0)
-  - FastVideo (0.1.0):
+  - FastVideo (0.2.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2754,7 +2754,7 @@ SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
-  FastVideo: c7577c401829817be8c7d31613353d13d18e9b3d
+  FastVideo: 5f29a4cf4d18e25d96b49b2e6df02bdbbaffccff
   FBLazyVector: b8f1312d48447cca7b4abc21ed155db14742bd03
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
@@ -2830,4 +2830,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ce67fbbd84547a6e1501f3c15ec0b22b157a5fd8
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

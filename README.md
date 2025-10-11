@@ -1,4 +1,9 @@
-# react-native-fast-video
+# react-native-fast-video-player
+<p align="center">
+  <img src="https://img.shields.io/npm/v/react-native-fast-video-player?color=green" alt="npm version" />
+  <img src="https://img.shields.io/npm/dm/react-native-fast-video-player" alt="npm downloads" />
+  <img src="https://img.shields.io/badge/react--native-0.70+-blue" alt="react-native" />
+</p>
 
 Support for Video
 
@@ -6,7 +11,7 @@ Support for Video
 
 
 ```sh
-npm install react-native-fast-video
+npm install react-native-fast-video-player
 npm install react-native-video
 npm install react-native-fast-orientation-locker
 ```
@@ -17,7 +22,7 @@ npm install react-native-fast-orientation-locker
 
 ```js
 import { View } from 'react-native';
-import { FastVideo } from 'react-native-fast-video';
+import { FastVideo } from 'react-native-fast-video-player';
 
 export default function App() {
   return (
