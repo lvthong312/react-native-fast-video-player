@@ -1,14 +1,14 @@
-import { useRef, useState, type ReactElement, useEffect } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import {
   Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
   type StyleProp,
   type TextStyle,
   type ViewStyle,
-  Platform,
 } from 'react-native';
 import Video, {
   type OnLoadData,
@@ -16,16 +16,26 @@ import Video, {
   type VideoRef,
 } from 'react-native-video';
 import { VideoControls } from './VideoControls';
-import {
-  lockToLandscape,
-  unlockAllOrientations,
-} from 'react-native-fast-orientation-locker';
+
 interface FastVideoProps {
   source: ReactVideoSource;
   watermarkText: string;
   watermarkStyle?: TextStyle;
   style?: StyleProp<ViewStyle>;
   OverLayComponent?: ReactElement;
+  onFullScreen?: () => void;
+  onCloseFullScreen?: () => void;
+  waterMaskPosition?:
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right';
+  offsetTop?: number;
+  offsetLeft?: number;
+  offsetRight?: number;
+  offsetBottom?: number;
 }
 export default function FastVideo({
   source,
@@ -33,6 +43,13 @@ export default function FastVideo({
   watermarkStyle,
   style,
   OverLayComponent,
+  onFullScreen,
+  onCloseFullScreen,
+  waterMaskPosition = 'top-left',
+  offsetTop = 0,
+  offsetLeft = 0,
+  offsetRight = 0,
+  offsetBottom = 0,
 }: FastVideoProps) {
   const smallRef = useRef<VideoRef>(null);
   const fullRef = useRef<VideoRef>(null);
@@ -42,6 +59,21 @@ export default function FastVideo({
   const [paused, setPaused] = useState(false);
   const [duration, setDuration] = useState(0);
   const [muted, setMuted] = useState(false);
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
+
+  useEffect(() => {
+    return () => {
+      if (onCloseFullScreen) {
+        onCloseFullScreen?.();
+      }
+    };
+  }, []);
+  const [videoDimension, setVideoDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
   const handleTogglePlay = () => {
     if (paused) {
       if (isFullscreen) {
@@ -58,13 +90,7 @@ export default function FastVideo({
     }
     setPaused((prev) => !prev);
   };
-  useEffect(() => {
-    return () => {
-      if (Platform.OS === 'android') {
-        unlockAllOrientations();
-      }
-    };
-  }, []);
+
   const handleSeek = (time: number) => {
     setCurrentTime(time);
     if (isFullscreen) {
@@ -79,15 +105,120 @@ export default function FastVideo({
   };
 
   const handleCloseFullscreen = () => {
-    if (Platform.OS === 'android') {
-      unlockAllOrientations();
+    if (onCloseFullScreen) {
+      onCloseFullScreen?.();
     }
     setFullscreen(false);
     smallRef.current?.seek(currentTime);
     smallRef.current?.resume();
     setFullscreen(false);
   };
+  const getWatermarkFullScreenPosition = (
+    position: FastVideoProps['waterMaskPosition']
+  ): any => {
+    const base: ViewStyle = {
+      position: 'absolute',
+      padding: 8,
+    };
 
+    switch (position) {
+      case 'top-left':
+        return {
+          ...base,
+          top:
+            (isLandscape ? 12 : screenHeight / 2 - videoDimension?.height / 2) +
+            offsetTop,
+          left: offsetLeft,
+        };
+      case 'top-center':
+        return {
+          ...base,
+          top:
+            (isLandscape ? 12 : screenHeight / 2 - videoDimension?.height / 2) +
+            offsetTop,
+          alignSelf: 'center',
+        };
+      case 'top-right':
+        return {
+          ...base,
+          top:
+            (isLandscape ? 12 : screenHeight / 2 - videoDimension?.height / 2) +
+            offsetTop,
+          right: offsetRight,
+        };
+      case 'bottom-left':
+        return {
+          ...base,
+          bottom:
+            (isLandscape ? 12 : screenHeight / 2 - videoDimension?.height / 2) +
+            offsetBottom,
+          left: offsetLeft,
+        };
+      case 'bottom-center':
+        return {
+          ...base,
+          bottom:
+            (isLandscape ? 12 : screenHeight / 2 - videoDimension?.height / 2) +
+            offsetBottom,
+          alignSelf: 'center',
+        };
+      case 'bottom-right':
+        return {
+          ...base,
+          bottom:
+            (isLandscape ? 12 : screenHeight / 2 - videoDimension?.height / 2) +
+            offsetBottom,
+          right: offsetRight,
+        };
+    }
+  };
+  const getWatermarkPosition = (
+    position: FastVideoProps['waterMaskPosition']
+  ): any => {
+    const base: ViewStyle = {
+      position: 'absolute',
+      padding: 8,
+    };
+
+    switch (position) {
+      case 'top-left':
+        return {
+          ...base,
+          top: offsetTop,
+          left: offsetLeft,
+        };
+      case 'top-center':
+        return {
+          ...base,
+          top: offsetTop,
+          alignSelf: 'center',
+        };
+      case 'top-right':
+        return {
+          ...base,
+          top: offsetTop,
+          right: offsetRight,
+        };
+      case 'bottom-left':
+        return {
+          ...base,
+          bottom: offsetBottom,
+          left: offsetLeft,
+        };
+      case 'bottom-center':
+        return {
+          ...base,
+          bottom: offsetBottom,
+          alignSelf: 'center',
+        };
+      case 'bottom-right':
+        return {
+          ...base,
+          bottom: offsetBottom,
+          right: offsetRight,
+        };
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       {/* Video nhỏ */}
@@ -129,7 +260,13 @@ export default function FastVideo({
           muted={muted}
           onToggleMute={() => setMuted(!muted)} // 👈 toggle audio
         />
-        <Text style={[styles.overlayText, watermarkStyle]}>
+        <Text
+          style={[
+            styles.overlayText,
+            getWatermarkPosition(waterMaskPosition),
+            watermarkStyle,
+          ]}
+        >
           {watermarkText}
         </Text>
         <View style={{ position: 'absolute' }}>{OverLayComponent}</View>
@@ -140,28 +277,48 @@ export default function FastVideo({
         visible={isFullscreen}
         onShow={() => {
           // khi modal mở → seek đến thời gian trước đó
-          if (Platform.OS === 'android') {
-            lockToLandscape?.();
+          if (onFullScreen) {
+            onFullScreen?.();
           }
         }}
         onRequestClose={() => {}}
-        supportedOrientations={['landscape']}
-        statusBarTranslucent
+        supportedOrientations={[
+          'portrait',
+          'landscape',
+          'landscape-left',
+          'landscape-right',
+        ]}
+        statusBarTranslucent={true}
       >
-        <View style={{ flex: 1, backgroundColor: 'black' }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'black',
+            justifyContent: 'center',
+          }}
+        >
           <Video
             ref={fullRef}
             source={{
               ...source,
               shouldCache: true,
             }}
-            style={{ width: '100%', height: '100%' }}
-            resizeMode="contain"
+            style={{
+              width: '100%',
+              height: isLandscape ? '100%' : videoDimension?.height,
+            }}
             onProgress={(data) => {
               setCurrentTime(data.currentTime);
             }}
             onLoad={(data: OnLoadData) => {
               fullRef.current?.seek(currentTime);
+              const aspectRatio =
+                data.naturalSize.width / data.naturalSize.height;
+
+              setVideoDimensions({
+                width: screenWidth,
+                height: screenWidth / aspectRatio,
+              });
               setDuration(data.duration);
             }}
             onEnd={() => {
@@ -188,7 +345,13 @@ export default function FastVideo({
             muted={muted}
             onToggleMute={() => setMuted(!muted)} // 👈 toggle audio
           />
-          <Text style={[styles.overlayText, watermarkStyle]}>
+          <Text
+            style={[
+              styles.overlayText,
+              getWatermarkFullScreenPosition(waterMaskPosition),
+              watermarkStyle,
+            ]}
+          >
             {watermarkText}
           </Text>
           <View style={{ position: 'absolute' }}>{OverLayComponent}</View>
@@ -201,5 +364,6 @@ const styles = StyleSheet.create({
   overlayText: {
     position: 'absolute',
     color: 'white',
+    pointerEvents: 'none',
   },
 });

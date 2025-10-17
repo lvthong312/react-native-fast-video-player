@@ -1,6 +1,6 @@
 {
   "name": "react-native-fast-video-player",
-  "version": "0.8.0",
+  "version": "0.18.0",
   "description": "Support for Video",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
@@ -90,8 +90,8 @@
     "@react-native-community/slider": "*",
     "react": "*",
     "react-native": "*",
-    "react-native-video": "*",
-    "react-native-fast-orientation-locker": "*"
+    "react-native-fast-orientation-locker": "*",
+    "react-native-video": "*"
   },
   "workspaces": [
     "example"

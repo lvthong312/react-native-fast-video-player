@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-fast-video": ["./src/index"]
+      "react-native-fast-video-player": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
